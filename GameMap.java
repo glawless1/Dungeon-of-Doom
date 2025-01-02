@@ -4,6 +4,7 @@
 public class GameMap {
 
     public char[][] map;
+    public int goldRequired;
  
     public GameMap() {
         map = new char[][] {
@@ -19,6 +20,7 @@ public class GameMap {
             { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
             { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' }
         };
+        goldRequired = goldCounter();
     }
 
     public int size(){
@@ -27,11 +29,11 @@ public class GameMap {
     }
 
     public char getCell(int x, int y) {
-        return map[x][y];
+        return map[y][x];
     }
 
     public void setCell(int x, int y, char entity) {
-        map[x][y] = entity;
+        map[y][x] = entity;
     }
 
     public int goldCounter(){
@@ -46,13 +48,26 @@ public class GameMap {
         return count;
     }
 
-    public void print(Player player) {
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 11; j++) {
-                if (i == player.getX() && j == player.getY()) {
+    public void look(Player player) {
+        for (int i = (player.getY() - 2); i < (player.getY() + 3); i++) {
+            for (int j = (player.getX() - 2); j < (player.getX() + 3); j++) {
+                if (i == player.getY() && j == player.getX()) {
                     System.out.print('P' + " ");
                 } else {
-                    System.out.print(map[i][j] + " ");
+                    System.out.print(map[j][i] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public void print(Player player) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map.length; j++) {
+                if (i == player.getY() && j == player.getX()) {
+                    System.out.print('P' + " ");
+                } else {
+                    System.out.print(map[j][i] + " ");
                 }
             }
             System.out.println();

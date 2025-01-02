@@ -13,58 +13,73 @@ public class Player {
         this.running = true;
     }
 
-    public void move (char direction, GameMap map) {
+    public void move (String direction, GameMap map) {
         int newX = x;
         int newY = y;
 
         switch (direction) {
-            case 'W': 
-                newX--; 
-                break;
-            case 'A': 
+            case "MOVE N": 
                 newY--; 
                 break;
-            case 'S':
-                newX++;
+            case "MOVE W": 
+                newX--; 
                 break;
-            case 'D':
+            case "MOVE S":
                 newY++;
                 break;
+            case "MOVE E":
+                newX++;
+                break;
             default:
-                System.out.println("Invalid move! Use W/A/S/D.");
+                System.out.println("MOVE N/ MOVE S/ MOVE E/ MOVE W: ");
                 return;
         }
 
 
         // Handle interactions
         char destination = map.getCell(newX, newY);
-        switch (destination) {
-            case '.':
-                break;
-            case 'G':
-                System.out.println("You found Gold!");
-                goldCollected += 1;
-                System.out.println(goldCollected);
-                break;
-            case '#':
-                System.out.println("You hit a wall!");
-                return;
-            case 'E':
-                if (goldCollected > 1){
-                    running = false;
-                }
-                else{
-                    System.out.println("You can't exit the game yet!");
-                    return;
-                }
-        }        
+        if (destination == '#'){
+            return;
+        }  
 
         // Update player position
         x = newX;
         y = newY;
+    }
 
-        // Clear the old cell
-        map.setCell(newX, newY, '.');
+    public void pickup(GameMap map){
+        if (map.getCell(getY(), getX()) == 'G'){
+            goldCollected += 1;
+            System.out.println("Success. Gold owned: " + goldCollected);
+            map.setCell(getY(), getX(), '.');
+        }
+        else{
+            System.out.println("Failed. Gold owned: " + goldCollected);
+            System.out.println(map.getCell(getY(), getX()));
+            System.out.println(getX());
+            System.out.println(getY());
+        }
+    }
+
+    public boolean quit(GameMap map){
+
+        if (map.getCell(getY(), getX()) == 'E'){
+            if (goldCollected >= map.goldRequired){
+                System.out.println("WIN");
+                System.out.println("Congratulations!");
+                return false;
+            }
+            else{
+                System.out.println("LOSE");
+                System.out.println("Unlucky, better luck next time.");
+                return false;
+            }
+        }
+        else{
+            System.out.println("You need to be on 'E' to win/exit the game. ");
+            return true;
+        }
+
     }
 
     // Getters and setters
