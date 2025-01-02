@@ -1,53 +1,61 @@
-import java.util.*;
+//import java.util.*;
 
 
 public class GameMap {
 
-    public List<List<String>> map;
+    public char[][] map;
  
     public GameMap() {
-        map = new ArrayList<>();
-
-        // Each row of the map is a list of strings
-        map.add(List.of("#########"));
-        map.add(List.of("#..G....#"));
-        map.add(List.of("#.......#"));
-        map.add(List.of("#.....G.#"));
-        map.add(List.of("#.......#"));
-        map.add(List.of("#.......#"));
-        map.add(List.of("#.G.....#"));
-        map.add(List.of("#.....E.#"));
-        map.add(List.of("#########"));
+        map = new char[][] {
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
+            { '#', '#', '.', '.', 'G', '.', '.', '.', '.', '#', '#' },
+            { '#', '#', '.', '.', '.', '.', '.', '.', '.', '#', '#' },
+            { '#', '#', '.', '.', '.', '.', '.', 'G', '.', '#', '#' },
+            { '#', '#', '.', '.', '.', '.', '.', '.', '.', '#', '#' },
+            { '#', '#', '.', '.', '.', '.', '.', '.', '.', '#', '#' },
+            { '#', '#', '.', 'G', '.', '.', '.', '.', '.', '#', '#' },
+            { '#', '#', '.', '.', '.', '.', '.', 'E', '.', '#', '#' },
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' }
+        };
     }
 
-    public void print() {
-        for (int i = 0; i < map.size(); i++){
-            System.out.println(map.get(i));
+    public int size(){
+        int len = map.length;
+        return len;
+    }
+
+    public char getCell(int x, int y) {
+        return map[x][y];
+    }
+
+    public void setCell(int x, int y, char entity) {
+        map[x][y] = entity;
+    }
+
+    public int goldCounter(){
+        int count = 0;
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] == 'G') {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public void print(Player player) {
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                if (i == player.getX() && j == player.getY()) {
+                    System.out.print('P' + " ");
+                } else {
+                    System.out.print(map[i][j] + " ");
+                }
+            }
+            System.out.println();
         }
     }
 }
-
-
-
-
-
-
-
-
-
-       /* public static void reader(String[] args) {
-        String filePath = "gamemaps/map1.txt"; // Specify the path to your file
-
-   
-        // Create a Scanner object to read the file
-        Scanner scanner = new Scanner(filePath);
-
-        // Read the file line by line
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            System.out.println(line); // Print the line to the console
-        }
-
-        // Close the Scanner
-        scanner.close();
-   }*/
